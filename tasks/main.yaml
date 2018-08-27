@@ -1,0 +1,13 @@
+---
+- name: install mongo 
+  apt: package=mongodb-server state=present
+  become: yes
+
+- name: MongoDB | Deploy backup crontab
+  template: src=cron.daily_automongobackup.j2 dest=/etc/cron.daily/automongobackup owner=root group=root mode=0644
+
+- name: MongoDB | Deploy backup defaults
+  template: src=default_automongobackup.j2 dest=/etc/default/automongobackup owner=root group=root mode=0644
+
+- name: MongoDB | Deploy backup script
+  copy: src=sbin_automongobackup dest=/usr/sbin/automongobackup owner=root group=root mode=0755
